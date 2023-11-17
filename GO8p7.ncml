@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf title="aggregation example" xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+  <variable name="vozocrtx" orgName="uo" />
+  <variable name="vomecrty" orgName="vo" />
+  <variable name="votemper" orgName="thetao_con" />
+  <variable name="vosaline" orgName="so_abs" />
+  <variable name="sossheig" orgName="zos" />
+
+  <aggregation type="union" >
+     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+        <variable name="e3t" orgName="thkcello" />
+        <aggregation type="joinExisting" dimName="time_counter" >
+           <scan location="/bodc/SOC220065/GO8p7_JRA55_eORCA12/monthly/T/"  regExp=".*grid-T.nc$" />
+        </aggregation>
+     </netcdf>
+     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+        <variable name="e3v" orgName="thkcello" />
+        <aggregation type="joinExisting" dimName="time_counter" >
+           <scan location="/bodc/SOC220065/GO8p7_JRA55_eORCA12/monthly/V/"  regExp=".*grid-V.nc$" />
+        </aggregation>
+     </netcdf>
+     <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+        <variable name="e3u" orgName="thkcello" />
+        <aggregation type="joinExisting" dimName="time_counter" >
+           <scan location="/bodc/SOC220065/GO8p7_JRA55_eORCA12/monthly/U/"  regExp=".*grid-U.nc$" />
+        </aggregation>
+     </netcdf>
+  </aggregation>
+</netcdf>
