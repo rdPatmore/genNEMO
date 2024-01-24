@@ -42,11 +42,11 @@
 !  I/O 
 !------------------------------------------------------------------------------
    sn_src_dir = 'GloSea6.ncml' ! src_files
-   sn_dst_dir = './OUTPUT/'
+   sn_dst_dir = '../../OUTPUT/GLOSEA6/'
    sn_fn      = 'AMM15'                ! prefix for output files
    nn_fv      = -1e20                 ! set fill value for output files
    nn_src_time_adj = 0                ! src time adjustment
-   sn_dst_metainfo = 'GloSea6-AMM7'
+   sn_dst_metainfo = 'GloSea6-AMM15'
 
 !------------------------------------------------------------------------------
 !  unstructured open boundaries                         

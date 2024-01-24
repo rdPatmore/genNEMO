@@ -10,12 +10,12 @@
 !!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 !------------------------------------------------------------------------------
-!   target vertical coordinate
+!   vertical coordinate
 !------------------------------------------------------------------------------
    ln_zco      = .false.   !  z-coordinate - full    steps   (T/F)  
    ln_zps      = .true.    !  z-coordinate - partial steps   (T/F)
    ln_sco      = .false.   !  s- or hybrid z-s-coordinate    (T/F)
-   rn_hmin     =   -10     !  min depth of the ocean (>0) or RDP NOT USED
+   rn_hmin     =   -10     !  min depth of the ocean (>0) or 
                            !  min number of ocean level (<0)
 
 !------------------------------------------------------------------------------
@@ -32,21 +32,20 @@
 !------------------------------------------------------------------------------
    sn_src_hgr = './parent_coords.nc' 
    sn_src_zgr = './inputs_src_zgr.ncml'
-   sn_dst_hgr = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
+   sn_dst_hgr = './domain_cfg_ME10_07_latfix.nc'
    sn_dst_zgr = './inputs_dst.ncml'
    sn_src_msk = './parent_mask.nc'
-   sn_bathy   = './AMM15_P2.0_bathy.nc'
-!   sn_bathy   = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
+   sn_bathy   = './bathy_meter.nc'
 
 !------------------------------------------------------------------------------
 !  I/O 
 !------------------------------------------------------------------------------
-   sn_src_dir = 'GloSea6.ncml' ! src_files
-   sn_dst_dir = './OUTPUT/'
-   sn_fn      = 'AMM15'                ! prefix for output files
+   sn_src_dir = 'GO8p7.ncml' ! src_files
+   sn_dst_dir = './OUTPUT/ISSUE_124'
+   sn_fn      = 'AMM7'                ! prefix for output files
    nn_fv      = -1e20                 ! set fill value for output files
    nn_src_time_adj = 0                ! src time adjustment
-   sn_dst_metainfo = 'GloSea6-AMM7'
+   sn_dst_metainfo = 'GO8p7-AMM7'
 
 !------------------------------------------------------------------------------
 !  unstructured open boundaries                         
@@ -55,15 +54,15 @@
     cn_coords_file = 'coords_open.bdy.nc' !  name of bdy coordinates files 
                                           !  (if ln_coords_file=.TRUE.)
     ln_mask_file   = .true.               !  =T : read mask from file
-    cn_mask_file   = 'bdy_msk.nc'   !  name of mask file 
+    cn_mask_file   = 'bdy_open_mask.nc'   !  name of mask file 
                                           !  (if ln_mask_file=.TRUE.)
-    ln_dyn2d       = .true.               !  boundary conditions for 
+    ln_dyn2d       = .false.               !  boundary conditions for 
                                           !  barotropic fields
     ln_dyn3d       = .true.               !  boundary conditions for 
                                           !  baroclinic velocities
     ln_tra         = .true.               !  boundary conditions for T and S
     ln_ice         = .false.              !  ice boundary condition   
-    nn_rimwidth    = 15                   !  width of the relaxation zone
+    nn_rimwidth    = 10                   !  width of the relaxation zone
 
 !------------------------------------------------------------------------------
 !  unstructured open boundaries tidal parameters                        
@@ -78,13 +77,13 @@
 !------------------------------------------------------------------------------
 !  Time information
 !------------------------------------------------------------------------------
-    nn_year_000     = 2004           !  year start
-    nn_year_end     = 2004           !  year end
-    nn_month_000    = 1             !  month start (default = 1 is years>1)
-    nn_month_end    = 1             !  month end (default = 12 is years>1)
+    nn_year_000     = 2005           !  year start
+    nn_year_end     = 2006           !  year end
+    nn_month_000    = 1              !  month start (default = 1 is years>1)
+    nn_month_end    = 12             !  month end (default = 12 is years>1)
     sn_dst_calendar = 'gregorian'    !  output calendar format
     nn_base_year    = 1900           !  base year for time counter
-    ln_time_interpolation = .true.  !  temporal interpolation parent to child
+    ln_time_interpolation = .false.  !  temporal interpolation parent to child
     ! TPXO
 	sn_tide_grid   = ''
 	sn_tide_h      = ''

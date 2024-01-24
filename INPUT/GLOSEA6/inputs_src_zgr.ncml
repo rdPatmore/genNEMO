@@ -2,8 +2,6 @@
    <ns0:aggregation type="union">
      <ns0:netcdf location="file:./parent_coords.nc">
      <ns0:variable name="gdept_0" orgName="depth" />
-/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc
- 
      </ns0:netcdf>
   </ns0:aggregation>
 </ns0:netcdf>

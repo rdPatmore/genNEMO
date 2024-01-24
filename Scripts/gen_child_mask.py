@@ -1,4 +1,5 @@
 import xarray as xr
+import numpy as np
 
 cfg_path = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
 mask = xr.open_dataset(cfg_path).top_level.squeeze()
