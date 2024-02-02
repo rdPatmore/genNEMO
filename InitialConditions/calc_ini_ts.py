@@ -23,8 +23,6 @@ def dep_interpolate_lev(ds, cfg, lev, var):
     return n_grid
 
 def dep_nd_interpolate_lev(ds, cfg, lev, var):
-    src_dep =  ds.deptht.values.flatten()
-    
     values = (ds[var].isel(deptht=lev).values.flatten())
 
     src_lon =  ds.nav_lon.values.flatten()
@@ -33,18 +31,46 @@ def dep_nd_interpolate_lev(ds, cfg, lev, var):
     src_lat = src_lat[~np.isnan(values)]
     points = list(zip(src_lon, src_lat))
     values = values[~np.isnan(values)]
-    print (cfg.nav_lat.shape)
     tgt_lon =  cfg.nav_lon
     tgt_lat =  cfg.nav_lat
+  
+    # test if layer is full of nan values
     if values.size > 0:
-
-        
+        #
         interp = NearestNDInterpolator(points, values)
         n_grid = interp(tgt_lon, tgt_lat)
-        print (n_grid.shape)
         return n_grid
-    else:
-        return np.full(cfg.nav_lat.shape, np.nan)
+
+def dep_3d_interpolate_lev(da, cfg):
+    print (da)
+    src_lon_3d = np.broadcast_to(da.nav_lon.data, da.shape)
+    src_lat_3d = np.broadcast_to(da.nav_lat.data, da.shape)
+    da = da.transpose("x","y","deptht")
+    src_dep_3d = np.transpose(np.broadcast_to(da.deptht.data, da.shape))
+
+    tgt_lon =  np.broadcast_to(cfg.nav_lon.data, cfg.gdept_0.shape)
+    tgt_lat =  np.broadcast_to(cfg.nav_lat.data, cfg.gdept_0.shape)
+    tgt_dep =  cfg.gdept_0.data
+
+    print (tgt_lon.shape)
+    print (tgt_lat.shape)
+    print (tgt_dep.shape)
+
+    # flatten input
+    values = da.values.flatten()
+    src_lon = src_lon_3d.flatten()
+    src_lat = src_lat_3d.flatten()
+    src_dep = src_dep_3d.flatten()
+
+    src_lon = src_lon[~np.isnan(values)]
+    src_lat = src_lat[~np.isnan(values)]
+    src_dep = src_dep[~np.isnan(values)]
+    points = list(zip(src_dep, src_lat, src_lon))
+    values = values[~np.isnan(values)]
+
+    interp = NearestNDInterpolator(points, values)
+    n_grid = interp(tgt_dep, tgt_lat, tgt_lon)
+    return n_grid
 
 def interp_var(var):
     # start year and month
@@ -56,27 +82,44 @@ def interp_var(var):
     path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
     fn = 'glosea6_grid_T_' + y + m + d + '.nc'
     
-    ds = xr.open_dataset(path + fn)
-    cfg = xr.open_dataset(cfg_fn)
+    da = xr.open_dataset(path + fn)[var].squeeze()
+    cfg = xr.open_dataset(cfg_fn).squeeze()
+    da = da.isel(deptht=slice(None,5))
+    cfg = cfg.isel(z=slice(None,5))
     ds_levs = []
-    for lev in range(ds.deptht.size):
-        ds_levs.append(dep_nd_interpolate_lev(ds, cfg, lev, var))
-        print (lev)
-    
-    
-    ds_n = np.array(ds_levs)
-    
-    coords=dict(deptht=(['deptht'], ds.deptht.values))
-    ds_n = xr.DataArray(data=ds_n, coords=coords,
+    da_n = dep_3d_interpolate_lev(da, cfg)
+    print (da_n.shape)
+    #for lev in range(ds.deptht.size):
+    #    interpolated_lev = dep_nd_interpolate_lev(ds, cfg, lev, var)
+    #    if interpolated_lev is not None:
+    #        ds_levs.append(interpolated_lev)
+    #        print (lev)
+    #
+    #
+    #ds_n = np.array(ds_levs)
+    #
+    #deptht_3d = np.broadcast_to(
+    #                   ds.deptht.isel(deptht=slice(None, ds_n.shape[0])).data,
+    #                    ds_n.shape[::-1])
+    coords=dict(deptht=(['deptht'], cfg.gdept_1d.data),
+                nav_lat=(['y','x'], cfg.nav_lat.data),
+                nav_lon=(['y','x'], cfg.nav_lon.data)
+               )
+
+    da_n = xr.DataArray(data=da_n, coords=coords,
                         dims=('deptht','y','x'), name=var)
+    print (da_n)
     
-    ds_n = ds_n.interp(deptht=cfg.gdept_1d).isel(t=0)
-    ds_n = ds_n.fillna(ds_n.mean())
+    #print (ds_n)
+    #print (ds_n.deptht)
+    #print (cfg.gdept_0)
+    #ds_n = ds_n.interp(deptht=cfg.gdept_0.values)
+    #ds_n[-1] = ds_n[-3]
+    #ds_n[-2] = ds_n[-3]
 
 
-    ds_n = ds_n.assign_coords(dict(nav_lat=cfg.nav_lat, nav_lon=cfg.nav_lon))
-
-    ds_n.to_netcdf('glosea_ini_' + y + m + d + '_'  + var + '.nc')
+    print ("done")
+    da_n.to_netcdf('glosea_ini_' + y + m + d + '_'  + var + '.nc')
 
 def create_uniform_forcing():
     cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
@@ -103,3 +146,4 @@ def create_uniform_forcing_masked():
     uniform_s.to_netcdf("amm15_uniform_s_masked.nc")
  
 interp_var('vosaline')
+#interp_var('votemper')
