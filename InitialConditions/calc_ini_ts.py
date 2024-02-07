@@ -42,19 +42,14 @@ def dep_nd_interpolate_lev(ds, cfg, lev, var):
         return n_grid
 
 def dep_3d_interpolate_lev(da, cfg):
-    print (da)
     src_lon_3d = np.broadcast_to(da.nav_lon.data, da.shape)
     src_lat_3d = np.broadcast_to(da.nav_lat.data, da.shape)
-    da = da.transpose("x","y","deptht")
-    src_dep_3d = np.transpose(np.broadcast_to(da.deptht.data, da.shape))
+    da_t = da.transpose("x","y","deptht")
+    src_dep_3d = np.transpose(np.broadcast_to(da_t.deptht.data, da_t.shape))
 
     tgt_lon =  np.broadcast_to(cfg.nav_lon.data, cfg.gdept_0.shape)
     tgt_lat =  np.broadcast_to(cfg.nav_lat.data, cfg.gdept_0.shape)
     tgt_dep =  cfg.gdept_0.data
-
-    print (tgt_lon.shape)
-    print (tgt_lat.shape)
-    print (tgt_dep.shape)
 
     # flatten input
     values = da.values.flatten()
@@ -84,11 +79,11 @@ def interp_var(var):
     
     da = xr.open_dataset(path + fn)[var].squeeze()
     cfg = xr.open_dataset(cfg_fn).squeeze()
-    da = da.isel(deptht=slice(None,5))
-    cfg = cfg.isel(z=slice(None,5))
+    #da = da.isel(deptht=slice(None,5))
+    #cfg = cfg.isel(z=slice(None,5))
     ds_levs = []
     da_n = dep_3d_interpolate_lev(da, cfg)
-    print (da_n.shape)
+    ##print (da_n.shape)
     #for lev in range(ds.deptht.size):
     #    interpolated_lev = dep_nd_interpolate_lev(ds, cfg, lev, var)
     #    if interpolated_lev is not None:
@@ -145,5 +140,5 @@ def create_uniform_forcing_masked():
     uniform_t.to_netcdf("amm15_uniform_t_masked.nc")
     uniform_s.to_netcdf("amm15_uniform_s_masked.nc")
  
-interp_var('vosaline')
-#interp_var('votemper')
+#interp_var('vosaline')
+interp_var('votemper')
