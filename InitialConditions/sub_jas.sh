@@ -7,7 +7,7 @@
 #SBATCH --partition=high-mem
 #SBATCH -o %j.out 
 #SBATCH -e %j.err
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --mem=100G
 
 # executable 
