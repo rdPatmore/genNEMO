@@ -68,8 +68,6 @@ def dep_3d_interpolate_lev(da, cfg):
 
 
 def interp_var(var, src_fn, cfg_fn):
-               src_path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
-               domcfg='GEG_SF12.nc'):
     '''
     Interpolate source gridded model output to target nemo grid 
 
@@ -78,7 +76,7 @@ def interp_var(var, src_fn, cfg_fn):
     '''
     
     # open datasets
-    da = xr.open_dataset(path + fn, chunks=-1)[var].squeeze()
+    da = xr.open_dataset(src_fn, chunks=-1)[var].squeeze()
     cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze()
 
     # interpolate
@@ -104,7 +102,8 @@ def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
 
     # set file paths
     cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/' + domcfg
-    src_fn = 'glosea6_grid_T_' + y + m + d + '.nc'
+    src_path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
+    src_fn = src_path + 'glosea6_grid_T_' + y + m + d + '.nc'
 
     # interpolate
     interp_var(var, src_fn, cfg_fn)
