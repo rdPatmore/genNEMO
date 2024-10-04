@@ -1,9 +1,9 @@
 import xarray as xr
 from dask.diagnostics import ProgressBar
 
-def set_cori():
+def set_cori(base):
     path = "/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/"
-    domcfg = xr.open_dataset(path + "GEG_SF12.nc",  chunks=dict(z=1))
+    domcfg = xr.open_dataset(path + base + ".nc",  chunks="auto")
     
     # set coriolis to zero
     domcfg["ff_t"] = domcfg.ff_t * 0.0
@@ -11,11 +11,11 @@ def set_cori():
     
     # save
     with ProgressBar():
-        domcfg.to_netcdf(path + "GEG_SF12_no_cori.nc")
+        domcfg.to_netcdf(path + base + "_no_cori.nc")
 
-def set_coords():
+def set_coords(base):
     path = "/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/"
-    domcfg = xr.open_dataset(path + "GEG_SF12_no_cori.nc", chunks="auto")
+    domcfg = xr.open_dataset(path + base + "_no_cori.nc", chunks="auto")
 
     # change from sco to zps
     domcfg["ln_sco"] = 0
@@ -23,6 +23,8 @@ def set_coords():
     
     # save
     with ProgressBar():
-        domcfg.to_netcdf(path + "GEG_SF12_no_cori_zps.nc")
+        domcfg.to_netcdf(path + base + "_no_cori_zps.nc")
 
-set_coords()
+base = "CO7_EXACT_CFG_FILE"
+#set_cori(base)
+set_coords(base)

@@ -20,9 +20,9 @@ def get_subdom_corner_latlon(lat_bounds, lon_bounds, mod_lat, mod_lon):
 
 # Put in json file
 data_path = "/gws/nopw/j04/jmmp/MASS/GloSea6/AMMregion/"
-path_in_t = data_path + "19921130T0000Z_mersea.grid_T.nc"
-path_in_u = data_path + "19921130T0000Z_mersea.grid_U.nc"
-path_in_v = data_path + "19921130T0000Z_mersea.grid_V.nc"
+path_in_t = data_path + "20060605T0000Z_mersea.grid_T.nc"
+path_in_u = data_path + "20060605T0000Z_mersea.grid_U.nc"
+path_in_v = data_path + "20060605T0000Z_mersea.grid_V.nc"
 # Put in json file
 var_t_name = "votemper"
 var_u_name = "vozocrtx"
@@ -31,8 +31,8 @@ var_v_name = "vomecrty"
 lat_bounds = np.array( [ 68, 68,  38, 38 ] ) #AMM7
 lon_bounds = np.array( [-28, 19, -28, 19 ] ) #AMM7
 # Put in json file
-mask_save_path = "parent_mask.nc"
-coord_save_path = "parent_coords.nc"
+mask_save_path = "parent_mask_new.nc"
+coord_save_path = "parent_coords_new.nc"
 
 ds_t = xr.open_dataset( path_in_t ).isel(time_counter=slice(0,1))
 ds_u = xr.open_dataset( path_in_u ).isel(time_counter=slice(0,1))
