@@ -1,0 +1,127 @@
+Didn't find a proxy environment variable
+Traceback (most recent call last):
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/site-packages/jnius/env.py", line 347, in get_jdk_home
+    jdk_home = realpath(
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/posixpath.py", line 391, in realpath
+    filename = os.fspath(filename)
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/bin/pybdy", line 5, in <module>
+    from pybdy.pybdy_exe import main
+  File "/home/users/ryapat30/NOC/pyBDY/src/pybdy/pybdy_exe.py", line 13, in <module>
+    from . import profiler
+  File "/home/users/ryapat30/NOC/pyBDY/src/pybdy/profiler.py", line 38, in <module>
+    from pybdy import nemo_bdy_extr_tm3 as extract
+  File "/home/users/ryapat30/NOC/pyBDY/src/pybdy/nemo_bdy_extr_tm3.py", line 42, in <module>
+    from pybdy.reader.factory import GetFile
+  File "/home/users/ryapat30/NOC/pyBDY/src/pybdy/reader/factory.py", line 13, in <module>
+    from pybdy.reader.ncml import NcMLFile
+  File "/home/users/ryapat30/NOC/pyBDY/src/pybdy/reader/ncml.py", line 33, in <module>
+    from jnius import autoclass
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/site-packages/jnius/__init__.py", line 45, in <module>
+    from .reflect import *  # noqa
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/site-packages/jnius/reflect.py", line 19, in <module>
+    class Class(JavaClass, metaclass=MetaJavaClass):
+  File "jnius/jnius_export_class.pxi", line 118, in jnius.MetaJavaClass.__new__
+  File "jnius/jnius_export_class.pxi", line 178, in jnius.MetaJavaClass.resolve_class
+  File "jnius/jnius_env.pxi", line 11, in jnius.get_jnienv
+  File "jnius/jnius_jvm_dlopen.pxi", line 95, in jnius.get_platform_jnienv
+  File "jnius/jnius_jvm_dlopen.pxi", line 54, in jnius.create_jnienv
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/site-packages/jnius/env.py", line 60, in get_java_setup
+    JAVA_HOME = get_jdk_home(platform)
+  File "/home/users/ryapat30/.conda/envs/pybdy-dev/lib/python3.9/site-packages/jnius/env.py", line 351, in get_jdk_home
+    raise Exception('Unable to find javac')
+Exception: Unable to find javac
+Didn't find a proxy environment variable
+GloSea6.ncml
+   
+   
+   
+   
+nt:  32
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  32
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  32
+   
+   
+   
+   
+Execution Time: 825.2948794364929
+Didn't find a proxy environment variable
+GloSea6.ncml
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+Execution Time: 969.238362789154
+Didn't find a proxy environment variable
+GloSea6.ncml
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+   
+   
+   
+   
+nt:  33
+   
+   
+   
+   
+Execution Time: 931.6185965538025
