@@ -1,4 +1,4 @@
-year=1995
+year=1999
 path="/gws/nopw/j04/jmmp/ryapat/CHAMFER/GLOSEA6"
 for file in ${path}_atlantic/*T_y${year}*; do  ncrename -v deptht,gdept $file; done
 for file in ${path}_atlantic/*U_y${year}*; do  ncrename -v depthu,gdepu $file; done

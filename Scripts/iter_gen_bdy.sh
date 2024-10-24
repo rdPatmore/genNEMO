@@ -1,12 +1,13 @@
 
+source set_up.sh
+
 bdy="GLOSEA6_atlantic"
 #bdy="GLOSEA6_baltic"
 path="../INPUT/${bdy}/"
 cd $path
-year=1995
+year=2001
 
-#for month in {01..12}; do
-for month in {11,}; do
+for month in {01..12}; do
         echo "$year-$month"
         cat namelist_AMM15.template \
             | sed "s,__MONTH0__,$month,g" \

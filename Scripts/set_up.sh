@@ -5,3 +5,4 @@ conda activate pybdy-dev
 JVM="jre-1.8.0-openjdk"
 export JAVA_HOME=/usr/lib/jvm/$JVM/
 export JVM_PATH=/usr/lib/jvm/$JVM/lib/amd64/server/libjvm.so
+alias iniarc='eval $(ssh-agent -s); ssh-add ~/.ssh/id_rsa_archer'
