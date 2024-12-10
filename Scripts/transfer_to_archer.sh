@@ -1,5 +1,5 @@
 path="/gws/nopw/j04/jmmp/ryapat/CHAMFER/GLOSEA6"
-year=1999
+year=2007
 
 for grid in {U,V,T}; do
   for m in {01..12}; do

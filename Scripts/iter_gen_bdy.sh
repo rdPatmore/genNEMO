@@ -1,13 +1,14 @@
 
 source set_up.sh
 
-bdy="GLOSEA6_atlantic"
-#bdy="GLOSEA6_baltic"
-path="../INPUT/${bdy}/"
-cd $path
-year=2001
+bdy_list=("GLOSEA6_atlantic" "GLOSEA6_baltic")
+year=2015
 
-for month in {01..12}; do
+for bdy in ${bdy_list[@]}; do
+    echo $bdy
+    path="/home/users/ryapat30/NOC/genNEMO/INPUT/${bdy}/"
+    cd $path
+    for month in {01..12}; do
         echo "$year-$month"
         cat namelist_AMM15.template \
             | sed "s,__MONTH0__,$month,g" \
@@ -20,4 +21,5 @@ for month in {01..12}; do
             > GloSea6.ncml
     
         pybdy -s namelist_AMM15.bdy
+    done
 done
