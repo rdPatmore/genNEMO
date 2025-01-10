@@ -67,7 +67,7 @@ def dep_3d_interpolate_lev(da, cfg):
     return n_grid
 
 
-def interp_var(var, src_fn, cfg_fn):
+def interp_var(var, src_fn, cfg_fn, dst_fn):
     '''
     Interpolate source gridded model output to target nemo grid 
 
@@ -76,8 +76,8 @@ def interp_var(var, src_fn, cfg_fn):
     '''
     
     # open datasets
-    da = xr.open_dataset(src_fn, chunks=-1)[var].squeeze()
-    cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze()
+    da = xr.open_dataset(src_fn, chunks=-1)[var].squeeze().load()
+    cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze().load()
 
     # interpolate
     da_n = dep_3d_interpolate_lev(da, cfg)
@@ -93,8 +93,7 @@ def interp_var(var, src_fn, cfg_fn):
                         dims=('deptht','y','x'), name=var)
 
     # save
-    da_n.to_netcdf('glosea_ini_' + y + m + d + '_' + domcfg +
-                   '_'  + var + '.nc')
+    da_n.to_netcdf(dst_fn)
 
 def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
                                domcfg='GEG_SF12.nc'):
@@ -104,9 +103,11 @@ def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
     cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/' + domcfg
     src_path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
     src_fn = src_path + 'glosea6_grid_T_' + y + m + d + '.nc'
+    dst_fn = 'glosea_ini_' + y + m + d + '_' + \
+              domcfg.removesuffix('.nc') + '_'  + var + '.nc'
 
     # interpolate
-    interp_var(var, src_fn, cfg_fn)
+    interp_var(var, src_fn, cfg_fn, dst_fn)
 
 def create_uniform_forcing():
     cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
@@ -134,4 +135,4 @@ def create_uniform_forcing_masked():
  
 if __name__ == '__main__':
     interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
-    interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')
+    #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')
