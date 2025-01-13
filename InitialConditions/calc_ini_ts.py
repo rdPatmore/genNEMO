@@ -104,7 +104,7 @@ def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
     src_path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
     src_fn = src_path + 'glosea6_grid_T_' + y + m + d + '.nc'
     dst_fn = 'glosea_ini_' + y + m + d + '_' + \
-              domcfg.removesuffix('.nc') + '_'  + var + '.nc'
+              domcfg.replace('.nc','') + '_'  + var + '.nc'
 
     # interpolate
     interp_var(var, src_fn, cfg_fn, dst_fn)
