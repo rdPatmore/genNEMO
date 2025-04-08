@@ -3,6 +3,7 @@ from scipy.interpolate import griddata
 from scipy.interpolate import NearestNDInterpolator
 import numpy as np
 import matplotlib.pyplot as plt
+from dask.diagnostics import ProgressBar
 
 def dep_interpolate_lev(ds, cfg, lev, var):
     src_lon =  ds.nav_lon.values.flatten()
@@ -66,6 +67,15 @@ def dep_3d_interpolate_lev(da, cfg):
     n_grid = interp(tgt_dep, tgt_lat, tgt_lon)
     return n_grid
 
+def check_depths(cfg):
+    '''
+    check for gdept_0 and, if absent, create
+    '''
+
+    depth_dim = set(["nav_lev","z"]).intersection(set(cfg.dims))
+    if 'gdept_0' not in list(cfg.keys()):
+        print (cfg)
+        cfg['gdept_0'] = cfg.e3t_0.cumsum(dim=depth_dim)
 
 def interp_var(var, src_fn, cfg_fn, dst_fn):
     '''
@@ -75,17 +85,22 @@ def interp_var(var, src_fn, cfg_fn, dst_fn):
     discrepancies.
     '''
     
+    tgt_cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze()
+    tgt_cfg = check_depths(tgt_cfg)
     # open datasets
-    da = xr.open_dataset(src_fn, chunks=-1)[var].squeeze().load()
-    cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze().load()
+    with ProgressBar():
+        da = xr.open_dataset(src_fn, chunks=-1)[var].squeeze().load()
+        tgt_cfg = xr.open_dataset(cfg_fn, chunks=-1).squeeze().load()
+
+    tgt_cfg = check_depths(tgt_cfg)
 
     # interpolate
-    da_n = dep_3d_interpolate_lev(da, cfg)
+    da_n = dep_3d_interpolate_lev(da, tgt_cfg)
 
     # set coordinates
-    coords=dict(deptht=(['deptht'], cfg.gdept_1d.data),
-                nav_lat=(['y','x'], cfg.nav_lat.data),
-                nav_lon=(['y','x'], cfg.nav_lon.data)
+    coords=dict(deptht=(['deptht','y','x'], tgt_cfg.gdept_0.data),
+                nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
+                nav_lon=(['y','x'], tgt_cfg.nav_lon.data)
                )
 
     # assign to DataArray
@@ -105,6 +120,18 @@ def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
     src_fn = src_path + 'glosea6_grid_T_' + y + m + d + '.nc'
     dst_fn = 'glosea_ini_' + y + m + d + '_' + \
               domcfg.replace('.nc','') + '_'  + var + '.nc'
+
+    # interpolate
+    interp_var(var, src_fn, cfg_fn, dst_fn)
+
+def flood_gosi8(var, y='1850', m='01', d='01'):
+    ''' take UKESM historical glosat and flood to gosi8 grid '''
+
+    # set file paths
+    cfg_fn = '/home/users/ryapat30/NOC/NAARC/domain_cfg.nc'
+    src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
+    src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
+    dst_fn = 'glosat_ukesm_to_gosi8_' + var + '.nc'
 
     # interpolate
     interp_var(var, src_fn, cfg_fn, dst_fn)
@@ -134,5 +161,6 @@ def create_uniform_forcing_masked():
     uniform_s.to_netcdf("amm15_uniform_s_masked.nc")
  
 if __name__ == '__main__':
-    interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
+    #interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
+    flood_gosi8('thetao', y='1850', m='01', d='01')
     #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')
