@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from dask.diagnostics import ProgressBar
 
 def dep_interpolate_lev(ds, cfg, lev, var):
+    """ nearest neighbour interpolation for a single level """
+
     src_lon =  ds.nav_lon.values.flatten()
     src_lat =  ds.nav_lat.values.flatten()
     src_dep =  ds.deptht.values.flatten()
@@ -22,23 +24,40 @@ def dep_interpolate_lev(ds, cfg, lev, var):
 
     return n_grid
 
-def dep_nd_interpolate_lev(ds, cfg, lev, var):
-    values = (ds[var].isel(deptht=lev).values.flatten())
+def dep_nd_interpolate_lev(da, cfg, lev=None):
+    """ nearest neighbour interpolation for a single level """
 
-    src_lon =  ds.nav_lon.values.flatten()
-    src_lat =  ds.nav_lat.values.flatten()
+    if lev: # reduce depth dimension
+        values = (da.isel(deptht=lev).values.flatten())
+    else: # already 2d
+        values = (da.values.flatten())
+
+    print (da.values.shape)
+    print ('')
+    print (cfg)
+    print ('')
+    # flatten source coordinates
+    src_lon =  da.nav_lon.values.flatten()
+    src_lat =  da.nav_lat.values.flatten()
+    
+    # drop missing source data
     src_lon = src_lon[~np.isnan(values)]
     src_lat = src_lat[~np.isnan(values)]
-    points = list(zip(src_lon, src_lat))
     values = values[~np.isnan(values)]
-    tgt_lon =  cfg.nav_lon
-    tgt_lat =  cfg.nav_lat
+
+    # format source sdata
+    points = list(zip(src_lat, src_lon))
+
+    # target coordinates 
+    with ProgressBar():
+        tgt_lon =  cfg.nav_lon.load()
+        tgt_lat =  cfg.nav_lat.load()
   
     # test if layer is full of nan values
     if values.size > 0:
-        #
+        # interpolate
         interp = NearestNDInterpolator(points, values)
-        n_grid = interp(tgt_lon, tgt_lat)
+        n_grid = interp(tgt_lat, tgt_lon)
         return n_grid
 
 def dep_3d_interpolate_lev(da, cfg, save=False, load=False, chunks=-1):
@@ -72,22 +91,22 @@ def dep_3d_interpolate_lev(da, cfg, save=False, load=False, chunks=-1):
         points = xr.concat([src_dep,src_lat,src_lon],dim="var_dim")
         points = points.reset_index("z")
 
-    # save inputs
+    # intermediate save of  inputs
     if save:
         with ProgressBar():
             dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
             points.to_netcdf(dst_path + "pre_interp_ds_tmp_points.nc")
         print ("SAVED")
+
+    # load to memory
     with ProgressBar():
         points = points.load()
         values = values.load()
 
     # interpolate
     interp = NearestNDInterpolator(points.T, values)
-    print ("done interpolator")
     n_grid = xr.apply_ufunc(interp, tgt_dep, tgt_lat, tgt_lon,
                             dask="parallelized")
-    print ("done ngrid")
 
     return n_grid
 
@@ -128,24 +147,73 @@ def interp_var(var, src_fn, cfg_fn, dst_fn):
     # interpolate
     tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks).squeeze()
     tgt_cfg = check_depths(tgt_cfg)
-    da_n = dep_3d_interpolate_lev( da, tgt_cfg)
+    da_n = dep_3d_interpolate_lev(da, tgt_cfg)
 
     # set coordinates
-    coords=dict(deptht=(['y','x','deptht'], tgt_cfg.gdept_0.data),
-                nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
-                nav_lon=(['y','x'], tgt_cfg.nav_lon.data)
-               )
+    #coords=dict(deptht=(['y','x','deptht'], tgt_cfg.gdept_0.data),
+    #            nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
+    #            nav_lon=(['y','x'], tgt_cfg.nav_lon.data)
+    #           )
 
     da_n = da_n.assign_coords(
            dict(nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
                 nav_lon=(['y','x'], tgt_cfg.nav_lon.data)))
 
     da_n.name = var
-    print (da_n)
 
     # save
     with ProgressBar():
         da_n.to_netcdf(dst_fn)
+
+def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
+    '''
+    Interpolate list of surface vars to target nemo grid
+    '''
+
+    # This is to ignore variable incompatible with chunking such as object dtype
+    # WARNING: not very flexible and my break code
+    full_var_list = list(xr.open_dataset(src_fn, chunks=-1).variables.keys())
+    var_dict['TLON'] = 'nav_lon'
+    var_dict['TLAT'] = 'nav_lat'
+    print (full_var_list)
+    drop_vars = [var for var in full_var_list if var not in list(var_dict.keys())]
+
+    # get source data
+    chunks = -1
+    ds = xr.open_dataset(src_fn, chunks=chunks, drop_variables=drop_vars)
+    ds = ds.rename({'TLON':'nav_lon', 'TLAT':'nav_lat'})
+
+    # shift lons
+    ds['nav_lon'] = xr.where(ds.nav_lon > 180, ds.nav_lon  - 360, ds.nav_lon)
+    print (ds.nav_lon.min().values)
+    print (ds.nav_lon.max().values)
+    del var_dict['TLON']
+    del var_dict['TLAT']
+
+    # interpolate
+    tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks).squeeze()
+    print (tgt_cfg.nav_lon.min().values)
+    print (tgt_cfg.nav_lon.max().values)
+    interp_list = [] 
+    for var in var_dict.keys():
+        if var in ['TLON','TLAT']:
+            continue
+        with ProgressBar():
+            da = ds[var].squeeze().load()
+        da_n = dep_nd_interpolate_lev(da, tgt_cfg)
+        da_n_xr = xr.DataArray(name=var, data=da_n, dims=('y','x'))
+        interp_list.append(da_n_xr)
+
+    ds = xr.merge(interp_list)
+    ds = ds.assign_coords(
+           dict(nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
+                nav_lon=(['y','x'], tgt_cfg.nav_lon.data)))
+
+    ds = ds.rename(var_dict)
+
+    with ProgressBar():
+        ds.to_netcdf(dst_fn)
+
 
 def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
                                domcfg='GEG_SF12.nc'):
@@ -169,29 +237,34 @@ def flood_gosi8(var, y='1850', m='01', d='01'):
     cfg_fn = dst_path + '/NAARC/NAARC_cfg.nc'
     src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
     src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
-    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
     dst_fn = dst_path + 'glosat_ukesm_to_gosi8_' + var + '.nc'
 
     # interpolate
     interp_var(var, src_fn, cfg_fn, dst_fn)
 
-#def create_glosat_tsd_interpolation_files():
-#    """
-#    NAARC does interpolation on the fly
-#    """
-#
-#    src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
-#    src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
-#    drop_vars=["time_centered_bounds","time_centered","time_counter"]
-#    da = xr.open_dataset(src_fn, chunks="auto", drop_variables=drop_vars
-#                       ).squeeze()
-#    mask = xr.where(da.zfull<10000,1,0)
-#    mask.name="mask"
-#    with ProgressBar():
-#        mask.to_netcdf("gosi9_mask.nc")
-#        da.zfull.to_netcdf("gosi9_depth.nc")
-#        da.thetao.to_netcdf("gosi9_temp.nc")
-#        da.thetao.to_netcdf("gosi9_salt.nc")
+def create_gosi8_sea_ice_ini():
+    ''' extract sea ice data from UKESM historical glosat data '''
+
+    # set file paths
+
+    # variable list
+    var_list = {'hi':'hti', # ice thickness
+                'hs':'hts', # snow thickness
+                'aice':'ati'} # ice concentration
+                #'sice':'smi', # ice salinity
+                #'Tinz':'tmi', # ice temperature
+                #'Tsfc':'tsu', # surface temperature
+                #'Tsnz':'tms'} # snow temperature
+
+    glosat_path = '/gws/nopw/j04/glosat/production/UKESM/raw/'
+    src_path = glosat_path + 'u-ck651/18500101T0000Z/'
+    src_fn = src_path + 'cice_ck651i_1m_18500201-18500301.nc'
+
+    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
+    dst_fn = dst_path + 'glosat_ukesm_to_gosi8_sea_ice.nc'
+    tgt_cfg = dst_path + '/NAARC/NAARC_cfg.nc'
+
+    interp_surface(var_list, src_fn, tgt_cfg, dst_fn)
 
 def create_uniform_forcing():
     cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/GEG_SF12.nc'
@@ -220,6 +293,7 @@ def create_uniform_forcing_masked():
 if __name__ == '__main__':
     #interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
     #flood_gosi8('thetao', y='1850', m='01', d='01')
-    flood_gosi8('so', y='1850', m='01', d='01')
+    #flood_gosi8('so', y='1850', m='01', d='01')
+    create_gosi8_sea_ice_ini()
     #create_glosat_tsd_interpolation_files()
     #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')
