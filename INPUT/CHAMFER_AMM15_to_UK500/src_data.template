@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+  <aggregation type="union" >
+     <scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/__YEAR__/__MONTH__/" regExp=".*grid_T\.nc">
+        <variable name="e3t" />
+     </scan>
+     <scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/__YEAR__/__MONTH__/" regExp=".*grid_V\.nc">
+        <variable name="e3v" />
+     </scan>
+     <scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/__YEAR__/__MONTH__/" regExp=".*grid_U\.nc">
+        <variable name="e3u" />
+     </scan>
+  </aggregation>
+</netcdf>

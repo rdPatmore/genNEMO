@@ -41,7 +41,7 @@
 !------------------------------------------------------------------------------
 !  I/O 
 !------------------------------------------------------------------------------
-   sn_src_dir = 'GloSea6.ncml' ! src_files
+   sn_src_dir = 'src_data.ncml' ! src_files
    sn_dst_dir = '/gws/nopw/j04/jmmp/ryapat/CHAMFER/GLOSEA6_baltic'
 
    sn_fn      = 'AMM15'                ! prefix for output files

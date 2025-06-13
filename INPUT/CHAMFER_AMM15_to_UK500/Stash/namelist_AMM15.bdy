@@ -78,10 +78,10 @@
 !------------------------------------------------------------------------------
 !  Time information
 !------------------------------------------------------------------------------
-    nn_year_000     = 2016           !  year start
-    nn_year_end     = 2016           !  year end
-    nn_month_000    = 12     !  month start (default = 1 is years>1)
-    nn_month_end    = 12     !  month end (default = 12 is years>1)
+    nn_year_000     = 1995           !  year start
+    nn_year_end     = 1995           !  year end
+    nn_month_000    = 10             !  month start (default = 1 is years>1)
+    nn_month_end    = 10             !  month end (default = 12 is years>1)
     sn_dst_calendar = 'gregorian'    !  output calendar format
     nn_base_year    = 1900           !  base year for time counter
     ln_time_interpolation = .true.  !  temporal interpolation parent to child

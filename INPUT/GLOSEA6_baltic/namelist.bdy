@@ -41,8 +41,9 @@
 !------------------------------------------------------------------------------
 !  I/O 
 !------------------------------------------------------------------------------
-   sn_src_dir = 'GloSea6.ncml' ! src_files
-   sn_dst_dir = '/gws/nopw/j04/jmmp/ryapat/CHAMFER/GLOSEA6_atlantic'
+   sn_src_dir = 'src_data.ncml' ! src_files
+   sn_dst_dir = '/gws/nopw/j04/jmmp/ryapat/CHAMFER/GLOSEA6_baltic'
+
    sn_fn      = 'AMM15'                ! prefix for output files
    nn_fv      = -1e20                 ! set fill value for output files
    nn_src_time_adj = 0                ! src time adjustment
@@ -55,7 +56,7 @@
     cn_coords_file = 'coords_open.bdy.nc' !  name of bdy coordinates files 
                                           !  (if ln_coords_file=.TRUE.)
     ln_mask_file   = .true.               !  =T : read mask from file
-    cn_mask_file   = 'bdy_msk.nc'   !  name of mask file 
+    cn_mask_file   = 'bdy_msk_baltic.nc'   !  name of mask file 
                                           !  (if ln_mask_file=.TRUE.)
     ln_dyn2d       = .true.               !  boundary conditions for 
                                           !  barotropic fields
@@ -78,8 +79,8 @@
 !------------------------------------------------------------------------------
 !  Time information
 !------------------------------------------------------------------------------
-    nn_year_000     = 2016           !  year start
-    nn_year_end     = 2016           !  year end
+    nn_year_000     = 2023      !  year start
+    nn_year_end     = 2023      !  year end
     nn_month_000    = 12     !  month start (default = 1 is years>1)
     nn_month_end    = 12     !  month end (default = 12 is years>1)
     sn_dst_calendar = 'gregorian'    !  output calendar format
