@@ -1,9 +1,8 @@
 
 source set_up.sh
 
-#bdy_list=("GLOSEA6_atlantic" "GLOSEA6_baltic")
-bdy_list=("CHAMFER_AMM15_to_UK500")
-year=1993
+bdy_list=("GLOSEA6_atlantic" "GLOSEA6_baltic")
+year=2023
 
 for bdy in ${bdy_list[@]}; do
     echo $bdy

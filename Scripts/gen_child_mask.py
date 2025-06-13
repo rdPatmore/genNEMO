@@ -39,4 +39,37 @@ def baltic():
     mask.loc[:,-1] = -1
     
     mask.to_netcdf('bdy_msk_baltic.nc')
-baltic()
+
+def adjust_NAARC():
+    
+    # path 
+    path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
+
+    # get cfg
+    cfg_path = path + 'domain_cfg_zps.nc'
+    cfg = xr.open_dataset(cfg_path, chunks=-1).squeeze()
+    top_lev = cfg.top_level.load()
+
+    # get mask
+    msk_path = path + 'bdy_msk_pybdy.nc'
+    msk = xr.load_dataarray(msk_path)
+    import matplotlib.pyplot as plt
+
+    msk = xr.where((msk == 0) & (top_lev == 1),  -1, top_lev)
+    msk_cut = msk[2660:2790,3765:3933]
+    msk[2660:2790,3765:3933] = xr.where(msk_cut == -1, 0, msk_cut)
+
+    # set north fold and closed sea to land
+    msk[-1] = 0
+
+
+    p=plt.pcolor(msk)
+    plt.colorbar(p)
+    plt.show()
+    msk.name = 'mask'
+
+    print (msk)
+
+    msk.to_netcdf(path + 'bdy_msk_verify.nc')
+    
+adjust_NAARC()

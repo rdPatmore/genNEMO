@@ -23,16 +23,24 @@ data_path = "/gws/nopw/j04/jmmp/MASS/GloSea6/AMMregion/"
 path_in_t = data_path + "20060605T0000Z_mersea.grid_T.nc"
 path_in_u = data_path + "20060605T0000Z_mersea.grid_U.nc"
 path_in_v = data_path + "20060605T0000Z_mersea.grid_V.nc"
+
+data_path = "/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"
+path_in_t = data_path + "nemo_ck651o_1m_18500101-18500201_grid-T.nc"
+path_in_u = data_path + "nemo_ck651o_1m_18500101-18500201_grid-U.nc"
+path_in_v = data_path + "nemo_ck651o_1m_18500101-18500201_grid-V.nc"
 # Put in json file
 var_t_name = "votemper"
 var_u_name = "vozocrtx"
 var_v_name = "vomecrty"
+var_t_name = "so"
+var_u_name = "uo"
+var_v_name = "vo"
 # Put in json file
 lat_bounds = np.array( [ 68, 68,  38, 38 ] ) #AMM7
 lon_bounds = np.array( [-28, 19, -28, 19 ] ) #AMM7
 # Put in json file
-mask_save_path = "parent_mask_new.nc"
-coord_save_path = "parent_coords_new.nc"
+mask_save_path = "parent_mask_verify.nc"
+coord_save_path = "parent_coords_verify.nc"
 
 ds_t = xr.open_dataset( path_in_t ).isel(time_counter=slice(0,1))
 ds_u = xr.open_dataset( path_in_u ).isel(time_counter=slice(0,1))
