@@ -32,10 +32,6 @@ def dep_nd_interpolate_lev(da, cfg, lev=None):
     else: # already 2d
         values = (da.values.flatten())
 
-    print (da.values.shape)
-    print ('')
-    print (cfg)
-    print ('')
     # flatten source coordinates
     src_lon =  da.nav_lon.values.flatten()
     src_lat =  da.nav_lat.values.flatten()
@@ -66,12 +62,15 @@ def dep_3d_interpolate_lev(da, cfg, save=False, load=False, chunks=-1):
     src_lon_3d, src_dep_3d = xr.broadcast(da.nav_lon, da.deptht)
     src_lat_3d, src_dep_3d = xr.broadcast(da.nav_lat, da.deptht)
 
+    # set dims
+    dims = ["deptht","y","x"]
+
     # flatten input
-    values = da.stack(z=["x","y","deptht"])
+    values = da.stack(z=dims)
 
     # set dst coords as 3d
-    tgt_lon, tgt_dep = xr.broadcast(cfg.nav_lon, cfg.gdept_0)
-    tgt_lat, tgt_dep = xr.broadcast(cfg.nav_lat, cfg.gdept_0)
+    tgt_dep, tgt_lon = xr.broadcast(cfg.gdept_0, cfg.nav_lon)
+    tgt_dep, tgt_lat = xr.broadcast(cfg.gdept_0, cfg.nav_lat)
 
     index = ~np.isnan(values).compute()
     values = values[index]
@@ -80,9 +79,9 @@ def dep_3d_interpolate_lev(da, cfg, save=False, load=False, chunks=-1):
         points = xr.open_dataarray(dst_path + "pre_interp_ds_tmp_points.nc",
                                    chunks=chunks)
     else:
-        src_lon = src_lon_3d.stack(z=["x","y","deptht"])
-        src_lat = src_lat_3d.stack(z=["x","y","deptht"])
-        src_dep = src_dep_3d.stack(z=["x","y","deptht"])
+        src_lon = src_lon_3d.stack(z=dims)
+        src_lat = src_lat_3d.stack(z=dims)
+        src_dep = src_dep_3d.stack(z=dims)
 
         src_lon = src_lon[index].expand_dims(var_dim=["x"])
         src_lat = src_lat[index].expand_dims(var_dim=["y"])
@@ -185,18 +184,14 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
 
     # shift lons
     ds['nav_lon'] = xr.where(ds.nav_lon > 180, ds.nav_lon  - 360, ds.nav_lon)
-    print (ds.nav_lon.min().values)
-    print (ds.nav_lon.max().values)
     del var_dict['TLON']
     del var_dict['TLAT']
 
     # interpolate
-    tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks).squeeze()
-    print (tgt_cfg.nav_lon.min().values)
-    print (tgt_cfg.nav_lon.max().values)
+    tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks, decode_times=False).squeeze()
     interp_list = [] 
     for var in var_dict.keys():
-        if var in ['TLON','TLAT']:
+        if var in ['TLON','TLAT','time']:
             continue
         with ProgressBar():
             da = ds[var].squeeze().load()
@@ -204,15 +199,16 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
         da_n_xr = xr.DataArray(name=var, data=da_n, dims=('y','x'))
         interp_list.append(da_n_xr)
 
-    ds = xr.merge(interp_list)
-    ds = ds.assign_coords(
+    ds_n = xr.merge(interp_list)
+    ds_n = ds_n.expand_dims(time=ds.time.data)
+    ds_n = ds_n.assign_coords(
            dict(nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
                 nav_lon=(['y','x'], tgt_cfg.nav_lon.data)))
 
-    ds = ds.rename(var_dict)
+    ds_n = ds_n.rename(var_dict)
 
     with ProgressBar():
-        ds.to_netcdf(dst_fn)
+        ds_n.to_netcdf(dst_fn)
 
 
 def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
@@ -234,10 +230,10 @@ def flood_gosi8(var, y='1850', m='01', d='01'):
 
     # set file paths
     dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
-    cfg_fn = dst_path + '/NAARC/NAARC_cfg.nc'
+    cfg_fn = dst_path + '/DOM/NAARC/domain_cfg_mes_formatted.nc'
     src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
     src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
-    dst_fn = dst_path + 'glosat_ukesm_to_gosi8_' + var + '.nc'
+    dst_fn = dst_path + 'INI/glosat_ukesm_to_gosi8_mes_' + var + '.nc'
 
     # interpolate
     interp_var(var, src_fn, cfg_fn, dst_fn)
@@ -248,7 +244,8 @@ def create_gosi8_sea_ice_ini():
     # set file paths
 
     # variable list
-    var_list = {'hi':'hti', # ice thickness
+    var_list = {'time':'time_counter', # ice thickness
+                'hi':'hti', # ice thickness
                 'hs':'hts', # snow thickness
                 'aice':'ati'} # ice concentration
                 #'sice':'smi', # ice salinity
@@ -260,9 +257,9 @@ def create_gosi8_sea_ice_ini():
     src_path = glosat_path + 'u-ck651/18500101T0000Z/'
     src_fn = src_path + 'cice_ck651i_1m_18500201-18500301.nc'
 
-    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
+    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
     dst_fn = dst_path + 'glosat_ukesm_to_gosi8_sea_ice.nc'
-    tgt_cfg = dst_path + '/NAARC/NAARC_cfg.nc'
+    tgt_cfg = dst_path + 'domain_cfg_zps_with_gdept_and_nav.nc'
 
     interp_surface(var_list, src_fn, tgt_cfg, dst_fn)
 
@@ -295,5 +292,4 @@ if __name__ == '__main__':
     #flood_gosi8('thetao', y='1850', m='01', d='01')
     #flood_gosi8('so', y='1850', m='01', d='01')
     create_gosi8_sea_ice_ini()
-    #create_glosat_tsd_interpolation_files()
     #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')

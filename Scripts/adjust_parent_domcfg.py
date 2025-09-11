@@ -41,10 +41,42 @@ def get_Bathymetry(path, fn_in, fn_out):
     with ProgressBar():
         bathy.to_netcdf(path + fn_out)
 
+def rename_coordinate(path, fn_in, fn_out, src_coord, dst_coord):
+
+    cfg = xr.open_dataset(path + fn_in, chunks="auto")
+    cfg = cfg.rename({src_coord:dst_coord})
+
+    with ProgressBar():
+        cfg.to_netcdf(path + fn_out)
+
+def adjust_dom_cfg_for_NAARC_ice(path, fn_in, fn_out):
+    cfg = xr.open_dataset(path + fn_in, chunks="auto")
+
+    # cut boundaries
+    # pybdy needs dst grid to be smaller than parent if not cyclic data
+    #cfg = cfg.isel(x=slice(10,-10),y=slice(10,-10))
+    cfg = cfg.isel(nav_lev=0)
+
+    with ProgressBar():
+        cfg.to_netcdf(path + fn_out)
+
+def add_nav_coords(path, fn_in, fn_out):
+    """
+    add nav_lat and nav_lon
+    """
+
+    cfg = xr.open_dataset(path + fn_in, chunks="auto")
+
+    cfg["nav_lon"] = cfg.glamt
+    cfg["nav_lat"] = cfg.gphit
+
+    with ProgressBar():
+        cfg.to_netcdf(path + fn_out)
+
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/UKESM/"
 fn_in = "domain_R1_UKESM_cfg_closein_straightin.nc"
 fn_out = "domcfg_UKESM1p1_gdept.nc"
-add_gdep_var(path, fn_in, fn_out, z_var="z")
+#add_gdep_var(path, fn_in, fn_out, z_var="z")
 
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
 fn_in = "domain_cfg_zps.nc"
@@ -52,7 +84,21 @@ fn_out = "domain_cfg_zps_gdept.nc"
 #get_Bathymetry(path, fn_in, "Bathymetry.nc")
 
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
+fn_in = "domain_cfg_mes.nc"
+fn_out = "domain_cfg_mes_formatted.nc"
+#rename_coordinate(path, fn_in, fn_out, "xx", "x")
+
+path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
 fn_in = "bdy_msk.nc"
 fn_out = "bdy_msk_pybdy.nc"
-
 #rename_bdy_msk_var(path, fn_in, fn_out)
+
+path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
+fn_in = "domain_cfg_zps_gdept.nc"
+fn_out = "domain_cfg_zps_gdept_ice.nc"
+adjust_dom_cfg_for_NAARC_ice(path, fn_in, fn_out)
+
+path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
+fn_in = "domain_cfg_zps_gdept.nc"
+fn_out = "domain_cfg_zps_with_gdept_and_nav.nc"
+#add_nav_coords(path, fn_in, fn_out)

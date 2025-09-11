@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --partition=standard
-#SBATCH --qos=standard
+#SBATCH --qos=high
 #SBATCH --mem=500G
 #SBATCH --time=12:00:00                    
 #SBATCH --account=verify_oce
@@ -11,4 +11,4 @@
 #export JAVA_HOME=/usr/lib/jvm/$JVM/
 #ls /usr/lib/jvm
 
-./iter_gen_bdy_NAARC.sh
+./iter_gen_bdy_NAARC_ice.sh

@@ -11,25 +11,25 @@
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <!--variable name="e3t" /-->
         <aggregation type="joinExisting" dimName="time_counter" >
-		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/"  regExp=".*25hourm_grid_T.nc$"/-->
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/03/"  regExp=".*25hourm_grid_T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/04/"  regExp=".*25hourm_grid_T.nc$" subdirs="false"/>
+		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/"  regExp=".*25hourm_grid_T.nc$"/-->
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/12/"  regExp=".*25hourm_grid_T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1994/01/"  regExp=".*25hourm_grid_T.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <!--variable name="e3v" /-->
         <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/03/" regExp=".*25hourm_grid_V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/04/" regExp=".*25hourm_grid_V.nc$" subdirs="false"/>
-		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/" regExp=".*25hourm_grid_V.nc$" /-->
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/12/" regExp=".*25hourm_grid_V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1994/01/" regExp=".*25hourm_grid_V.nc$" subdirs="false"/>
+		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/" regExp=".*25hourm_grid_V.nc$" /-->
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <!--variable name="e3u" /-->
         <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/03/" regExp=".*25hourm_grid_U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/04/" regExp=".*25hourm_grid_U.nc$" subdirs="false"/>
-		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1996/" regExp=".*25hourm_grid_U.nc$" /-->
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/12/" regExp=".*25hourm_grid_U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1994/01/" regExp=".*25hourm_grid_U.nc$" subdirs="false"/>
+		<!--scan location="/gws/nopw/j04/chamfer/AMM15_C09p2_CHAMFER/Output/RawOuput/1993/" regExp=".*25hourm_grid_U.nc$" /-->
         </aggregation>
      </netcdf>
   </aggregation>

@@ -2,13 +2,13 @@
 source set_up.sh
 
 bdy_list=("CHAMFER_AMM15_to_UK500_clean")
-year=1996
+year=1993
 
 for bdy in ${bdy_list[@]}; do
     echo $bdy
     path="/home/users/ryapat30/NOC/genNEMO/INPUT/${bdy}/"
     cd $path
-    for month in {01..12}; do
+    for month in {07..12}; do
         echo "$year-$month"
 	month_p1=$(date --date "$year-$month-01 +1 month" "+%m")
 	year_p1=$(date --date "$year-$month-01 +1 month" "+%Y")
@@ -16,7 +16,7 @@ for bdy in ${bdy_list[@]}; do
 	
         cat namelist.template \
             | sed "s,__MONTH0__,$month,g" \
-            | sed "s,__MONTH1__,$month,g" \
+            | sed "s,__MONTH1__,$month_p1,g" \
             | sed "s,__YEAR0__,$year,g" \
             | sed "s,__YEAR1__,$year,g" \
             > namelist.bdy

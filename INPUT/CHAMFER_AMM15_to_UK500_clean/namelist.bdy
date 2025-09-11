@@ -97,8 +97,8 @@
 !------------------------------------------------------------------------------
 !  Time information for output
 !------------------------------------------------------------------------------
-    sn_date_start   = '1996-03-01'    !  dst output date start YYYY-MM-DD
-    sn_date_end     = '1996-03-01'    !  dst output date end YYYY-MM-DD
+    sn_date_start   = '1993-12-01'    !  dst output date start YYYY-MM-DD
+    sn_date_end     = '1993-01-01'    !  dst output date end YYYY-MM-DD
     sn_dst_calendar = 'gregorian'     !  output calendar format
     sn_date_origin  = '1900-01-01'    !  reference for time counter YYYY-MM-DD
     ln_time_interpolation = .true. !  set to false to use parent

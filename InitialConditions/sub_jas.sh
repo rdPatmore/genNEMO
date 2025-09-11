@@ -9,7 +9,7 @@
 #SBATCH -o %j.out 
 #SBATCH -e %j.err
 #SBATCH --time=12:00:00
-#SBATCH --mem=300G
+#SBATCH --mem=100G
 #SBATCH --account=jmmp
 
 # executable 

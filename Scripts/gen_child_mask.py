@@ -71,5 +71,26 @@ def adjust_NAARC():
     print (msk)
 
     msk.to_netcdf(path + 'bdy_msk_verify.nc')
+
+def adjust_NAARC_ice():
+
+    # path 
+    path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
+
+    # get mask
+    msk_path = path + 'bdy_msk_verify.nc'
+    msk = xr.load_dataarray(msk_path, drop_variables=["x","y"])
     
-adjust_NAARC()
+    # set atlantic into out of bounds
+    msk[:,2000:] = xr.where(msk[:,2000:] == 1, -1, msk[:,2000:])
+
+    # cut boundaries
+    # pybdy needs dst grid to be smaller than parent if not cyclic data
+    #msk = msk[10:-10,10:-10]
+
+    # set north fold
+    msk[-1] = 0
+
+    msk.to_netcdf(path + 'bdy_msk_verify_ice.nc')
+    
+adjust_NAARC_ice()
