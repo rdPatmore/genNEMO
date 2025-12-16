@@ -52,7 +52,7 @@
 !  I/O
 !------------------------------------------------------------------------------
    sn_src_dir = 'src_data.ncml' ! src_files
-   sn_dst_dir = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/'
+   sn_dst_dir = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/OCE/'
    !sn_dst_dir = '.'
    sn_fn      = 'GloSat_NAARC'       ! prefix for output files
    nn_fv      = -1e20                !  set fill value for output files
@@ -108,15 +108,15 @@
 !------------------------------------------------------------------------------
 !  Time information for output
 !-----------------------------------------------------------------------------
-    sn_date_start   = '1850-01-01'    !  dst output date start YYYY-MM-DD
-    sn_date_end     = '1850-02-01'    !  dst output date end YYYY-MM-DD
+    sn_date_start   = '1859-01-01'    !  dst output date start YYYY-MM-DD
+    sn_date_end     = '1859-12-31'    !  dst output date end YYYY-MM-DD
     sn_dst_calendar = 'gregorian'     !  output calendar format
     sn_date_origin  = '1800-01-01'    !  reference for time counter YYYY-MM-DD
     ln_time_interpolation = .false. !  set to false to use parent
                                    !  calender for monthly frequency only
 
-!    nn_year_000     = 1850           !  year start
-!    nn_year_end     = 1850           !  year end
+!    nn_year_000     = 1859           !  year start
+!    nn_year_end     = 1859           !  year end
 !    nn_month_000    = 1     !  month start (default = 1 is years>1)
 !    nn_month_end    = 1     !  month end (default = 12 is years>1)
 !    sn_dst_calendar = 'gregorian' !  output calendar format

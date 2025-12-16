@@ -2,7 +2,7 @@
 source set_up.sh
 
 bdy_list=("VERIFY_NAARC")
-year=1850
+year=1859
 
 for bdy in ${bdy_list[@]}; do
     echo $bdy

@@ -16,40 +16,40 @@
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
 
         <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500401T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500701T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18501001T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18510101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590401T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590701T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18591001T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18600101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500401T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500701T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18501001T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18510101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590401T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590701T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18591001T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18600101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500401T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500701T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18501001T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18510101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590401T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590701T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18591001T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18600101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <!--netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <dimension name="time_centered" orgName="time" />
         <variable name="time_centered" orgName="time" />
         <aggregation type="joinExisting" dimName="time" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500401T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500701T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18501001T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18510101T0000Z/"  regExp="cice.*$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590101T0000Z/"  regExp="cice.*$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590401T0000Z/"  regExp="cice.*$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18590701T0000Z/"  regExp="cice.*$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18591001T0000Z/"  regExp="cice.*$" subdirs="false"/>
+		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18600101T0000Z/"  regExp="cice.*$" subdirs="false"/>
         </aggregation>
      </netcdf-->
   </aggregation>

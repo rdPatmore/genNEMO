@@ -1,4 +1,4 @@
-conda activate pybdy-clean2
+conda activate pybdy-clean3
 #conda activate pybdy-dev
 #JVM="jre-1.8.0-openjdk-1.8.0.392.b08-2.el7_9.x86_64"
 #JVM="jre-1.8.0-openjdk-1.8.0.402.b06-1.el7_9.x86_64"
