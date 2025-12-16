@@ -174,7 +174,6 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
     full_var_list = list(xr.open_dataset(src_fn, chunks=-1).variables.keys())
     var_dict['TLON'] = 'nav_lon'
     var_dict['TLAT'] = 'nav_lat'
-    print (full_var_list)
     drop_vars = [var for var in full_var_list if var not in list(var_dict.keys())]
 
     # get source data
@@ -230,7 +229,7 @@ def flood_gosi8(var, y='1850', m='01', d='01'):
 
     # set file paths
     dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
-    cfg_fn = dst_path + '/DOM/NAARC/domain_cfg_mes_formatted.nc'
+    cfg_fn = dst_path + '/DOM/NAARC/domain_cfg_mes.nc'
     src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
     src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
     dst_fn = dst_path + 'INI/glosat_ukesm_to_gosi8_mes_' + var + '.nc'
@@ -238,7 +237,7 @@ def flood_gosi8(var, y='1850', m='01', d='01'):
     # interpolate
     interp_var(var, src_fn, cfg_fn, dst_fn)
 
-def create_gosi8_sea_ice_ini():
+def create_gosi8_sea_ice_instance(y, m):
     ''' extract sea ice data from UKESM historical glosat data '''
 
     # set file paths
@@ -253,13 +252,34 @@ def create_gosi8_sea_ice_ini():
                 #'Tsfc':'tsu', # surface temperature
                 #'Tsnz':'tms'} # snow temperature
 
-    glosat_path = '/gws/nopw/j04/glosat/production/UKESM/raw/'
-    src_path = glosat_path + 'u-ck651/18500101T0000Z/'
-    src_fn = src_path + 'cice_ck651i_1m_18500201-18500301.nc'
+    yyyy_0 = str(y)
+    mm = str(m).zfill(2)
+    if m == 12:
+        y = y-1
+    date0 = np.datetime64(str(y) + '-' + str(m).zfill(2))
+    date1 = date0 + np.timedelta64(1, 'M')
+    mm_0 = date0.item().strftime('%m')
+    mm_1 = date1.item().strftime('%m')
+    yyyy_0 = date0.item().strftime('%Y')
+    yyyy_1 = date1.item().strftime('%Y')
 
-    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
-    dst_fn = dst_path + 'glosat_ukesm_to_gosi8_sea_ice.nc'
-    tgt_cfg = dst_path + 'domain_cfg_zps_with_gdept_and_nav.nc'
+    if m in [1,2,12]:
+        dir_mm = "01"
+    elif m in [3,4,5]:
+        dir_mm = "04"
+    elif m in [6,7,8]:
+        dir_mm = "07"
+    elif m in [9,10,11]:
+        dir_mm = "10"
+
+    glosat_path = '/gws/nopw/j04/glosat/production/UKESM/raw/'
+    src_path = glosat_path + f'u-ck651/{yyyy_1}{dir_mm}01T0000Z/'
+    src_fn = src_path + f'cice_ck651i_1m_{yyyy_0}{mm_0}01-{yyyy_1}{mm_1}01.nc'
+
+    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/ICE_src/'
+    dst_fn = dst_path + f'glosat_ukesm_to_gosi8_sea_ice_y{yyyy_0}m{mm_0}.nc'
+    tgt_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
+    tgt_cfg = tgt_path + 'domain_cfg_zps_with_gdept_and_nav.nc'
 
     interp_surface(var_list, src_fn, tgt_cfg, dst_fn)
 
@@ -290,6 +310,10 @@ def create_uniform_forcing_masked():
 if __name__ == '__main__':
     #interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
     #flood_gosi8('thetao', y='1850', m='01', d='01')
-    #flood_gosi8('so', y='1850', m='01', d='01')
-    create_gosi8_sea_ice_ini()
+    flood_gosi8('so', y='1850', m='01', d='01')
+    #create_gosi8_sea_ice_instance(1860, 12)
+    #for year in range (1852,1860):
+    #    for month in range(1,13):
+    #        print (year, month)
+    #        create_gosi8_sea_ice_instance(year, month)
     #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')
