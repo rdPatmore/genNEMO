@@ -1,4 +1,7 @@
-conda activate pybdy-clean3
+#conda activate pybdy-clean3 # this one is for MES 06/05/2026
+conda activate pybdy-clean2 # this was the last one used for ice 07/04/2026
+#conda activate pybdy-clean
+
 #conda activate pybdy-dev
 #JVM="jre-1.8.0-openjdk-1.8.0.392.b08-2.el7_9.x86_64"
 #JVM="jre-1.8.0-openjdk-1.8.0.402.b06-1.el7_9.x86_64"

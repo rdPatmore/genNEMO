@@ -3,7 +3,7 @@
 #SBATCH --partition=standard
 #SBATCH --qos=high
 #SBATCH --mem=500G
-#SBATCH --time=12:00:00                    
+#SBATCH --time=24:00:00                    
 #SBATCH --account=verify_oce
 
 #JVM="jre-11"
@@ -11,4 +11,4 @@
 #export JAVA_HOME=/usr/lib/jvm/$JVM/
 #ls /usr/lib/jvm
 
-./iter_gen_bdy_NAARC_MES.sh
+./iter_gen_bdy_NAARC_MES.sh $1 $2

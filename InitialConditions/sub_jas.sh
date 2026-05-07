@@ -5,10 +5,10 @@
 #SBATCH --threads-per-core=1 
 
 #SBATCH --partition=standard
-#SBATCH --qos=standard
+#SBATCH --qos=high
 #SBATCH -o %j.out 
 #SBATCH -e %j.err
-#SBATCH --time=12:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=100G
 #SBATCH --account=jmmp
 

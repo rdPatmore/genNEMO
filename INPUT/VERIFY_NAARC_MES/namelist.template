@@ -42,7 +42,7 @@
    sn_src_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc
    sn_dst_hgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_mes.nc'
    sn_dst_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_mes.nc'
-   sn_src_msk =  '/gws/nopw/j04/jmmp/jmmp_collab/eORCA025/mesh_mask_eORCA1-GO6.nc'
+   sn_src_msk =  '/gws/ssde/j25b/jmmp/jmmp_collab/eORCA025/mesh_mask_eORCA1-GO6.nc'
    sn_bathy   = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/Bathymetry.nc'
 
    sn_nme_map = 'grid_name_map.json'     ! json file mapping variable names to netcdf vars
@@ -50,7 +50,7 @@
 !------------------------------------------------------------------------------
 !  I/O
 !------------------------------------------------------------------------------
-   sn_src_dir = 'src_data.ncml' ! src_files
+   sn_src_dir = 'src_data.__YEAR0__.ncml' ! src_files
    sn_dst_dir = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/LBC/OCE/MES_clean3/'
    !sn_dst_dir = '.'
    sn_fn      = 'GloSat_NAARC_MES'       ! prefix for output files

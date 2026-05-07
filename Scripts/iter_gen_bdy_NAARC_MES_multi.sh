@@ -1,7 +1,7 @@
 
-bdy_list=("VERIFY_NAARC_MES")
+bdy_list=("VERIFY_NAARC_ICE")
 
-for year in {1967..1969}; do
+for year in {1962,}; do
    echo $year
    for bdy in ${bdy_list[@]}; do
        echo $bdy

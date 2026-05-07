@@ -4,6 +4,7 @@ from scipy.interpolate import NearestNDInterpolator
 import numpy as np
 import matplotlib.pyplot as plt
 from dask.diagnostics import ProgressBar
+import cftime
 
 def dep_interpolate_lev(ds, cfg, lev, var):
     """ nearest neighbour interpolation for a single level """
@@ -174,11 +175,13 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
     full_var_list = list(xr.open_dataset(src_fn, chunks=-1).variables.keys())
     var_dict['TLON'] = 'nav_lon'
     var_dict['TLAT'] = 'nav_lat'
-    drop_vars = [var for var in full_var_list if var not in list(var_dict.keys())]
+    drop_vars = [var for var in full_var_list 
+                 if var not in list(var_dict.keys())]
 
     # get source data
     chunks = -1
-    ds = xr.open_dataset(src_fn, chunks=chunks, drop_variables=drop_vars)
+    ds = xr.open_dataset(src_fn, chunks=chunks, drop_variables=drop_vars,
+                   decode_times=False)
     ds = ds.rename({'TLON':'nav_lon', 'TLAT':'nav_lat'})
 
     # shift lons
@@ -187,7 +190,8 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
     del var_dict['TLAT']
 
     # interpolate
-    tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks, decode_times=False).squeeze()
+    tgt_cfg = xr.open_dataset(cfg_fn, chunks=chunks,
+                              decode_times=False).squeeze()
     interp_list = [] 
     for var in var_dict.keys():
         if var in ['TLON','TLAT','time']:
@@ -199,12 +203,48 @@ def interp_surface(var_dict, src_fn, cfg_fn, dst_fn):
         interp_list.append(da_n_xr)
 
     ds_n = xr.merge(interp_list)
-    ds_n = ds_n.expand_dims(time=ds.time.data)
+    ds_n = ds_n.expand_dims(time=ds.time)
+    ds_n.time.attrs = ds.time.attrs
+    ds_n.time.encoding = {'dtype':'int64'}
+
     ds_n = ds_n.assign_coords(
            dict(nav_lat=(['y','x'], tgt_cfg.nav_lat.data),
                 nav_lon=(['y','x'], tgt_cfg.nav_lon.data)))
 
+    # temporary - to remove 
+    #ds_n.time.attrs = {"units":"days since 1800-01-01"}
+
     ds_n = ds_n.rename(var_dict)
+
+    with ProgressBar():
+        ds_n.to_netcdf(dst_fn)
+
+
+def interpolate_glosea6_to_co9(var, y='1993', m='01', d='01',
+                               domcfg='GEG_SF12.nc'):
+    ''' interpolate glosea6 data to co9 target grid '''
+
+    # set file paths
+    cfg_fn = '/gws/nopw/j04/jmmp/public/AMM15/DOMAIN_CFG/' + domcfg
+    src_path = '/gws/nopw/j04/jmmp/MASS/GloSea6/Daily/'
+    src_fn = src_path + 'glosea6_grid_T_' + y + m + d + '.nc'
+    dst_fn = 'glosea_ini_' + y + m + d + '_' + \
+              domcfg.replace('.nc','') + '_'  + var + '.nc'
+
+    # interpolate
+    interp_var(var, src_fn, cfg_fn, dst_fn)
+
+def flood_gosi8(var, y='1850', m='01', d='01'):
+    ''' take UKESM historical glosat and flood to gosi8 grid '''
+
+    # set file paths
+    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/'
+    cfg_fn = dst_path + '/DOM/NAARC/domain_cfg_mes.nc'
+    src_path = '/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/'
+    src_fn = src_path + 'nemo_ck651o_1m_18500101-18500201_grid-T.nc'
+    dst_fn = dst_path + 'INI/glosat_ukesm_to_gosi8_mes_' + var + '.nc'
+
+    print (ds_n.time_counter.units)
 
     with ProgressBar():
         ds_n.to_netcdf(dst_fn)
@@ -254,8 +294,8 @@ def create_gosi8_sea_ice_instance(y, m):
 
     yyyy_0 = str(y)
     mm = str(m).zfill(2)
-    if m == 12:
-        y = y-1
+    #if m == 12:
+    #    y = y+1
     date0 = np.datetime64(str(y) + '-' + str(m).zfill(2))
     date1 = date0 + np.timedelta64(1, 'M')
     mm_0 = date0.item().strftime('%m')
@@ -272,13 +312,15 @@ def create_gosi8_sea_ice_instance(y, m):
     elif m in [9,10,11]:
         dir_mm = "10"
 
-    glosat_path = '/gws/nopw/j04/glosat/production/UKESM/raw/'
+    
+
+    glosat_path = '/gws/ssde/j25a/glosat/production/UKESM/raw/'
     src_path = glosat_path + f'u-ck651/{yyyy_1}{dir_mm}01T0000Z/'
     src_fn = src_path + f'cice_ck651i_1m_{yyyy_0}{mm_0}01-{yyyy_1}{mm_1}01.nc'
 
-    dst_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/ICE_src/'
+    dst_path = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/LBC/ICE_src/'
     dst_fn = dst_path + f'glosat_ukesm_to_gosi8_sea_ice_y{yyyy_0}m{mm_0}.nc'
-    tgt_path = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
+    tgt_path = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/'
     tgt_cfg = tgt_path + 'domain_cfg_zps_with_gdept_and_nav.nc'
 
     interp_surface(var_list, src_fn, tgt_cfg, dst_fn)
@@ -310,10 +352,10 @@ def create_uniform_forcing_masked():
 if __name__ == '__main__':
     #interpolate_glosea6_to_co9('vosaline', domcfg='CO7_EXACT_CFG_FILE.nc')
     #flood_gosi8('thetao', y='1850', m='01', d='01')
-    flood_gosi8('so', y='1850', m='01', d='01')
-    #create_gosi8_sea_ice_instance(1860, 12)
-    #for year in range (1852,1860):
-    #    for month in range(1,13):
-    #        print (year, month)
-    #        create_gosi8_sea_ice_instance(year, month)
+    #flood_gosi8('so', y='1850', m='01', d='01')
+    for year in range (1950,1960):
+        print ("year: ", year)
+        for month in range(1,13):
+            print (year, month)
+            create_gosi8_sea_ice_instance(year, month)
     #interpolate_glosea6_to_co9('votemper', domcfg='CO7_EXACT_CFG_FILE.nc')

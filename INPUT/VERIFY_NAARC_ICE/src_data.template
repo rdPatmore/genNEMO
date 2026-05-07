@@ -4,6 +4,6 @@
 <variable name="sithic" orgName="hti" />
 <variable name="snthic" orgName="hts" />
     <aggregation type="joinExisting" dimName="time_counter" >
-	    <scan location="/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/ICE_src/" regExp="glosat_ukesm_to_gosi8_sea_ice.*$" subdirs="false"/>
+	    <scan location="/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/LBC/ICE_src/" regExp="glosat_ukesm_to_gosi8_sea_ice_y__YEAR__.*$" subdirs="false"/>
     </aggregation>
 </netcdf>

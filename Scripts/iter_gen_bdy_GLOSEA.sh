@@ -2,7 +2,7 @@
 source set_up.sh
 
 bdy_list=("GLOSEA6_atlantic" "GLOSEA6_baltic")
-year=2023
+year=2024
 
 for bdy in ${bdy_list[@]}; do
     echo $bdy

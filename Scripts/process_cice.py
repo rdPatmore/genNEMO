@@ -1,9 +1,9 @@
 import xarray as xr
 from dask.diagnostics import ProgressBar
 
-path_in = "/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18500101T0000Z/"
-fn_in = "cice_ck651i_1m_18500101-18500201.nc"
-path_out = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/ICE_src/"
+path_in = "/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/18610101T0000Z/"
+fn_in = "cice_ck651i_1m_18610101-18610201.nc"
+path_out = "/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/LBC/ICE_src/"
 fn_out = fn_in
 
 ice = xr.open_dataset(path_in + fn_in, chunks=-1)

@@ -30,12 +30,12 @@
 !------------------------------------------------------------------------------
 !  grid information
 !------------------------------------------------------------------------------
-   sn_src_hgr = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc'
-   sn_src_zgr = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc
-   sn_dst_hgr = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_zps_gdept.nc'
-   sn_dst_zgr = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_zps_gdept.nc'
+   sn_src_hgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc'
+   sn_src_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc
+   sn_dst_hgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_zps_gdept.nc'
+   sn_dst_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_zps_gdept.nc'
    sn_src_msk =  '/gws/nopw/j04/jmmp/jmmp_collab/eORCA025/mesh_mask_eORCA1-GO6.nc'
-   sn_bathy   = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/Bathymetry.nc'
+   sn_bathy   = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/Bathymetry.nc'
 
    !sn_src_msk =  '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc' ! has no t,u,v mask
    !sn_src_msk =  '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/UKESM/parent_mask_verify.nc'
@@ -55,7 +55,7 @@
 !  I/O
 !------------------------------------------------------------------------------
    sn_src_dir = 'src_data.ncml' ! src_files
-   sn_dst_dir = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/LBC/ICE/'
+   sn_dst_dir = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/LBC/ICE/'
    !sn_dst_dir = '.'
    sn_fn      = 'GloSat_NAARC'       ! prefix for output files
    nn_fv      = -1e20                !  set fill value for output files
@@ -73,7 +73,7 @@
     cn_coords_file = 'coordinates.bdy.nc' !  name of bdy coordinates files
                                           !  (if ln_coords_file=.TRUE.)
     ln_mask_file   = .true.              !  =T : read mask from file
-    cn_mask_file   = '/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/bdy_msk_verify.nc' ! name or mask file
+    cn_mask_file   = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/bdy_msk_verify.nc' ! name or mask file
                                           !  (if ln_mask_file=.TRUE.)
     ln_dyn2d       = .false.               !  boundary conditions for
                                           !  barotropic fields
@@ -111,15 +111,15 @@
 !------------------------------------------------------------------------------
 !  Time information for output
 !-----------------------------------------------------------------------------
-    sn_date_start   = '1850-01-01'    !  dst output date start YYYY-MM-DD
-    sn_date_end     = '1850-12-31'    !  dst output date end YYYY-MM-DD
+    sn_date_start   = '1869-01-01'    !  dst output date start YYYY-MM-DD
+    sn_date_end     = '1869-12-31'    !  dst output date end YYYY-MM-DD
     sn_dst_calendar = 'gregorian'     !  output calendar format
     sn_date_origin  = '1800-01-01'    !  reference for time counter YYYY-MM-DD
     ln_time_interpolation = .false. !  set to false to use parent
                                    !  calender for monthly frequency only
 
-!    nn_year_000     = 1850           !  year start
-!    nn_year_end     = 1850           !  year end
+!    nn_year_000     = 1869           !  year start
+!    nn_year_end     = 1869           !  year end
 !    nn_month_000    = 1     !  month start (default = 1 is years>1)
 !    nn_month_end    = 1     !  month end (default = 12 is years>1)
 !    sn_dst_calendar = 'gregorian' !  output calendar format

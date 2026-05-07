@@ -22,7 +22,7 @@ cat namelist.template \
 cat "src_data.template" \
     | sed "s,__YEAR__,$year,g" \
     | sed "s,__YEAR_p1__,$year_p1,g" \
-    > src_data.ncml.$year
+    > src_data.$year.ncml
 
 pybdy -s namelist.bdy.$year
 #    done

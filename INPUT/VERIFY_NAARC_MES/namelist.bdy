@@ -42,7 +42,7 @@
    sn_src_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/UKESM/domcfg_UKESM1p1_gdept.nc
    sn_dst_hgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_mes.nc'
    sn_dst_zgr = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/domain_cfg_mes.nc'
-   sn_src_msk =  '/gws/nopw/j04/jmmp/jmmp_collab/eORCA025/mesh_mask_eORCA1-GO6.nc'
+   sn_src_msk =  '/gws/ssde/j25b/jmmp/jmmp_collab/eORCA025/mesh_mask_eORCA1-GO6.nc'
    sn_bathy   = '/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/NAARC/Bathymetry.nc'
 
    sn_nme_map = 'grid_name_map.json'     ! json file mapping variable names to netcdf vars
@@ -103,15 +103,15 @@
 !------------------------------------------------------------------------------
 !  Time information for output
 !-----------------------------------------------------------------------------
-    sn_date_start   = '1851-01-01'    !  dst output date start YYYY-MM-DD
-    sn_date_end     = '1851-12-31'    !  dst output date end YYYY-MM-DD
+    sn_date_start   = '1965-01-01'    !  dst output date start YYYY-MM-DD
+    sn_date_end     = '1965-12-31'    !  dst output date end YYYY-MM-DD
     sn_dst_calendar = 'gregorian'     !  output calendar format
     sn_date_origin  = '1800-01-01'    !  reference for time counter YYYY-MM-DD
     ln_time_interpolation = .false. !  set to false to use parent
                                    !  calender for monthly frequency only
 
-!    nn_year_000     = 1851           !  year start
-!    nn_year_end     = 1851           !  year end
+!    nn_year_000     = 1965           !  year start
+!    nn_year_end     = 1965           !  year end
 !    nn_month_000    = 1     !  month start (default = 1 is years>1)
 !    nn_month_end    = 1     !  month end (default = 12 is years>1)
 !    sn_dst_calendar = 'gregorian' !  output calendar format
