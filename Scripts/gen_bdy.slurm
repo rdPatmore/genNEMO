@@ -11,4 +11,4 @@
 #export JAVA_HOME=/usr/lib/jvm/$JVM/
 #ls /usr/lib/jvm
 
-./iter_gen_bdy_NAARC_MES.sh $1 $2
+./iter_gen_bdy.sh $1 $2

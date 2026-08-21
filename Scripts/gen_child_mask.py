@@ -41,6 +41,32 @@ def baltic():
     
     mask.to_netcdf('bdy_msk_baltic.nc')
 
+def gsr36():
+    """ 
+    Create mask that defines location of bdy forcing for GSR36
+    """
+
+    root = '/gws/ssde/j25a/verify_oce/NEMO/'
+    path = root + 'Preprocessing/DOM/GSR36/'
+
+    # get cfg
+    cfg_path = path + '1_domain_cfg.nc'
+    mask = xr.open_dataset(cfg_path).top_level.squeeze()
+    mask.name = 'mask'
+    
+    # 0 is land 
+    # 1 is ocean
+    # -1 is edge of domain
+    
+    # make mask for bdy (pyBdy searches for boundary between -1 and 1)
+    mask.loc[0,:] = -1
+    mask.loc[-1,:] = -1
+    mask.loc[:,-1] = -1
+    mask.loc[:,0] = -1
+    
+    mask.to_netcdf('bdy_msk_gsr36.nc')
+
+
 def adjust_NAARC(coord="mes"):
     
     # path 
@@ -133,5 +159,6 @@ def find_diff_in_zps_and_mes():
     axs[2].pcolormesh(diff)
     plt.show()
     
-find_diff_in_zps_and_mes()
+#find_diff_in_zps_and_mes()
 #adjust_NAARC()
+gsr36()

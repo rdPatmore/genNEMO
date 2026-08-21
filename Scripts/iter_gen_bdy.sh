@@ -1,27 +1,29 @@
-
 source set_up.sh
 
-#bdy_list=("GLOSEA6_atlantic" "GLOSEA6_baltic")
-bdy_list=("CHAMFER_AMM15_to_UK500")
-year=1993
+#bdy_list=("VERIFY_NAARC_MES")
 
-for bdy in ${bdy_list[@]}; do
-    echo $bdy
-    path="/home/users/ryapat30/NOC/genNEMO/INPUT/${bdy}/"
-    cd $path
-    for month in {01..12}; do
-        echo "$year-$month"
-        cat namelist.template \
-            | sed "s,__MONTH0__,$month,g" \
-            | sed "s,__MONTH1__,$month,g" \
-            | sed "s,__YEAR0__,$year,g" \
-            | sed "s,__YEAR1__,$year,g" \
-            > namelist.bdy
-        cat "src_data.template" \
-            | sed "s,__YEAR__,$year,g" \
-            | sed "s,__MONTH__,$month,g" \
-            > src_data.ncml
-    
-        pybdy -s namelist.bdy
-    done
-done
+#for year in {1957..1965}; do
+#	echo $year
+#    for bdy in ${bdy_list[@]}; do
+#        echo $bdy
+year=$1
+bdy=$2
+
+path="/home/users/ryapat30/NOC/genNEMO/INPUT/${bdy}/"
+cd $path
+echo "$year"
+year_p1=$(date --date "$year-01-01 +1 year" "+%Y")
+echo "$year_p1"
+
+cat namelist.template \
+    | sed "s,__YEAR0__,$year,g" \
+    | sed "s,__YEAR1__,$year,g" \
+    > namelist.bdy.$year
+cat "src_data.template" \
+    | sed "s,__YEAR__,$year,g" \
+    | sed "s,__YEAR_p1__,$year_p1,g" \
+    > src_data.$year.ncml
+
+pybdy -s namelist.bdy.$year
+#    done
+#done

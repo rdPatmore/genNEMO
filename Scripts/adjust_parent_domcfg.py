@@ -32,9 +32,9 @@ def get_Bathymetry(path, fn_in, fn_out):
     bathy = cfg.bathy_metry
 
     bathy.name = "Bathymetry"
-    nav_lon = bathy.x.drop_vars(["x","y"])
-    nav_lat = bathy.y.drop_vars(["x","y"])
-    bathy = bathy.drop_vars(["x","y"])
+    nav_lon = bathy.x#.drop_vars(["x","y"])
+    nav_lat = bathy.y#.drop_vars(["x","y"])
+    bathy = bathy#.drop_vars(["x","y"])
     bathy = bathy.assign_coords({"nav_lon": nav_lon,
                                  "nav_lat": nav_lat})
 
@@ -78,10 +78,10 @@ fn_in = "domain_R1_UKESM_cfg_closein_straightin.nc"
 fn_out = "domcfg_UKESM1p1_gdept.nc"
 #add_gdep_var(path, fn_in, fn_out, z_var="z")
 
-path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
-fn_in = "domain_cfg_zps.nc"
+path = "/gws/ssde/j25a/verify_oce/NEMO/Preprocessing/DOM/GSR36/"
+fn_in = "1_domain_cfg.nc"
 fn_out = "domain_cfg_zps_gdept.nc"
-#get_Bathymetry(path, fn_in, "Bathymetry.nc")
+get_Bathymetry(path, fn_in, "Bathymetry.nc")
 
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
 fn_in = "domain_cfg_mes.nc"
@@ -96,7 +96,7 @@ fn_out = "bdy_msk_pybdy.nc"
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
 fn_in = "domain_cfg_zps_gdept.nc"
 fn_out = "domain_cfg_zps_gdept_ice.nc"
-adjust_dom_cfg_for_NAARC_ice(path, fn_in, fn_out)
+#adjust_dom_cfg_for_NAARC_ice(path, fn_in, fn_out)
 
 path = "/gws/nopw/j04/verify_oce/NEMO/Preprocessing/DOM/NAARC/"
 fn_in = "domain_cfg_zps_gdept.nc"

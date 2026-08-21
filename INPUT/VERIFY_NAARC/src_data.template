@@ -9,47 +9,71 @@
   <!--variable name="ice1" orgName="aice" /-->
   <!--variable name="ice2" orgName="hi" /-->
   <!--variable name="ice3" orgName="hs" /-->
-  <variable orgName="time_counter" name="time"/>
-  <variable orgName="time_centered" name="time_counter"/>
+  <variable name="time_counter" orgName="time_centered"/>
+  <variable name="time" orgName="time_counter"/>
 
   <aggregation type="union" >
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
 
-        <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+        <aggregation type="joinExisting" dimName="time_centered" >
+           <variable name="time_centered" shape="time_centered" >
+              <attribute name="_CoordinateAxisType" value="Time" />
+           </variable>
+           <dimension name="time_centered" length="1"/>
+
+           <variable name="so" shape="time_centered deptht y x" />
+           <variable name="thetao" shape="time_centered deptht y x" />
+           <variable name="zos" shape="time_centered y x" />
+
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-T.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
-        <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+        <aggregation type="joinExisting" dimName="time_centered" >
+
+           <variable name="time_centered" shape="time_centered" >
+              <attribute name="_CoordinateAxisType" value="Time" />
+           </variable>
+           <dimension name="time_centered" length="1"/>
+
+           <variable name="uo" shape="time_centered depthu y x" />
+
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-U.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
-        <aggregation type="joinExisting" dimName="time_counter" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+        <aggregation type="joinExisting" dimName="time_centered" >
+
+           <variable name="time_centered" shape="time_centered" >
+              <attribute name="_CoordinateAxisType" value="Time" />
+           </variable>
+           <dimension name="time_centered" length="1"/>
+
+           <variable name="vo" shape="time_centered depthv y x" />
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
+		<scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp=".*_grid-V.nc$" subdirs="false"/>
         </aggregation>
      </netcdf>
      <!--netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
         <dimension name="time_centered" orgName="time" />
         <variable name="time_centered" orgName="time" />
         <aggregation type="joinExisting" dimName="time" >
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp="cice.*$" subdirs="false"/>
-		<scan location="/gws/nopw/j04/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp="cice.*$" subdirs="false"/>
+	     <scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0101T0000Z/"  regExp="cice.*$" subdirs="false"/>
+	     <scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0401T0000Z/"  regExp="cice.*$" subdirs="false"/>
+	     <scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__0701T0000Z/"  regExp="cice.*$" subdirs="false"/>
+	     <scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR__1001T0000Z/"  regExp="cice.*$" subdirs="false"/>
+	     <scan location="/gws/ssde/j25a/glosat/production/UKESM/raw/u-ck651/__YEAR_p1__0101T0000Z/"  regExp="cice.*$" subdirs="false"/>
         </aggregation>
      </netcdf-->
   </aggregation>
